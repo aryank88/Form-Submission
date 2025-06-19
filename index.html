@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Institute Setup Form</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="form-container">
+    <h1 class="main-title">Institute Setup Form</h1>
+
+    <div class="stepper">
+      <div class="step active" id="nav1">🔐<br><span>Account</span></div>
+      <div class="step" id="nav2">👥<br><span>Team</span></div>
+      <div class="step" id="nav3">📚<br><span>Course</span></div>
+      <div class="step" id="nav4">✅<br><span>Success</span></div>
+    </div>
+
+    <form id="multiStepForm" action="https://formspree.io/f/manjbgjb" method="POST">
+      <!-- STEP 1 -->
+      <div class="step-form active" id="step1">
+        <h2>Business Information</h2>
+        <input type="text" name="institute" placeholder="Institute Name" required />
+        <input type="file" name="logo" />
+        <textarea name="address" placeholder="Address"></textarea>
+        <input type="text" name="contact" placeholder="Contact Number" />
+        <div class="btn-group">
+          <button type="button" onclick="nextStep()">Next</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-form" id="step2">
+        <h2>Team Setup</h2>
+
+        <!-- Teacher & Subject Pair -->
+        <div id="teacherContainer">
+          <div class="teacher-input">
+            <input type="text" name="teachers[]" placeholder="Teacher's Name" required />
+            <input type="text" name="subjects[]" placeholder="Subject" required />
+          </div>
+        </div>
+        <button type="button" onclick="addTeacher()" class="add-btn">+ Add Another</button>
+
+        <input type="text" name="counselorName" placeholder="Counselor's Name" />
+        <input type="text" name="counselorPhone" placeholder="Counselor's Phone Number" />
+        <input type="email" name="counselorEmail" placeholder="Counselor's Email" />
+
+        <div class="btn-group">
+          <button type="button" onclick="prevStep()">Back</button>
+          <button type="button" onclick="nextStep()">Next</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-form" id="step3">
+        <h2>Course Details</h2>
+
+        <label>Select Category:</label>
+        <div class="radio-group">
+          <label><input type="radio" name="category" value="NEET" /> NEET</label>
+          <label><input type="radio" name="category" value="JEE" /> JEE</label>
+          <label><input type="radio" name="category" value="SSC" /> SSC</label>
+        </div>
+
+        <label for="startDate">Start Date:</label>
+        <input type="date" name="startDate" id="startDate" />
+
+        <label for="endDate">End Date:</label>
+        <input type="date" name="endDate" id="endDate" />
+
+        <input type="text" name="timings" placeholder="Timings" />
+
+        <div class="btn-group">
+          <button type="button" onclick="prevStep()">Back</button>
+          <button type="submit">Submit</button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-form" id="step4">
+        <h2>Success 🎉</h2>
+        <p>Your form has been submitted successfully.</p>
+      </div>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

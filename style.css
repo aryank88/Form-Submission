@@ -1,0 +1,170 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #dceefb, #e3f2fd);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 10px;
+}
+
+.form-container {
+  background: linear-gradient(to bottom right, #e0f7fa, #f1f9ff);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 500px; /* Max width for large screens */
+}
+
+.main-title {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  padding: 8px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.stepper .step {
+  flex: 1;
+  text-align: center;
+  color: grey;
+  font-size: 13px;
+  padding: 5px;
+}
+
+.stepper .step.active {
+  color: #7c5cff;
+  font-weight: bold;
+  border-bottom: 3px solid #7c5cff;
+}
+
+.step-form {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.step-form.active {
+  display: block;
+}
+
+input, textarea {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.teacher-input {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;  /* Allow inputs to wrap */
+}
+
+.teacher-input input {
+  flex: 1;
+  min-width: 200px;  /* Set a minimum width for inputs */
+}
+
+.add-btn {
+  background: #5e35b1;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #7c5cff;
+  color: white;
+  font-weight: 500;
+}
+
+/* Media Query for Tablets and smaller devices */
+@media screen and (max-width: 768px) {
+  .form-container {
+    padding: 20px;
+  }
+
+  .stepper {
+    flex-direction: column;
+  }
+
+  .stepper .step {
+    font-size: 12px;
+    padding: 5px 0;
+  }
+
+  .teacher-input {
+    flex-direction: column;  /* Stack input fields vertically on smaller screens */
+  }
+
+  .teacher-input input {
+    width: 100%;
+  }
+
+  .add-btn, button {
+    width: 100%;
+  }
+}
+
+/* Media Query for Mobile phones */
+@media screen and (max-width: 480px) {
+  .form-container {
+    max-width: 100%;
+  }
+
+  .stepper {
+    font-size: 10px;
+  }
+
+  input, textarea {
+    font-size: 12px;
+  }
+
+  button {
+    padding: 12px 20px;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
