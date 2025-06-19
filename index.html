@@ -16,12 +16,13 @@
       <div class="step" id="nav4">✅<br><span>Success</span></div>
     </div>
 
-    <form id="multiStepForm" action="https://formspree.io/f/manjbgjb" method="POST">
+    <!-- ✅ Removed action and method -->
+    <form id="multiStepForm">
       <!-- STEP 1 -->
       <div class="step-form active" id="step1">
         <h2>Business Information</h2>
         <input type="text" name="institute" placeholder="Institute Name" required />
-        <input type="file" name="logo" />
+        <input type="text" name="logo" placeholder="Logo URL (optional)" />
         <textarea name="address" placeholder="Address"></textarea>
         <input type="text" name="contact" placeholder="Contact Number" />
         <div class="btn-group">
@@ -33,7 +34,6 @@
       <div class="step-form" id="step2">
         <h2>Team Setup</h2>
 
-        <!-- Teacher & Subject Pair -->
         <div id="teacherContainer">
           <div class="teacher-input">
             <input type="text" name="teachers[]" placeholder="Teacher's Name" required />
