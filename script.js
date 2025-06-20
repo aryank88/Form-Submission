@@ -62,43 +62,44 @@ document.getElementById("multiStepForm").addEventListener("submit", async functi
   e.preventDefault();
 
   const form = this;
-  const formData = new FormData(form);
 
-  // Collect form fields manually to avoid losing multiple values
+  // ✅ Manually extract all data fields
   const data = {
-    institute: formData.get("institute"),
-    logo: formData.get("logo"),
-    address: formData.get("address"),
-    contact: formData.get("contact"),
-    counselorName: formData.get("counselorName"),
-    counselorPhone: formData.get("counselorPhone"),
-    counselorEmail: formData.get("counselorEmail"),
-    category: formData.get("category"),
-    startDate: formData.get("startDate"),
-    endDate: formData.get("endDate"),
-    timings: formData.get("timings")
+    institute: form.querySelector('[name="institute"]').value,
+    logo: form.querySelector('[name="logo"]').value,
+    address: form.querySelector('[name="address"]').value,
+    contact: form.querySelector('[name="contact"]').value,
+    counselorName: form.querySelector('[name="counselorName"]').value,
+    counselorPhone: form.querySelector('[name="counselorPhone"]').value,
+    counselorEmail: form.querySelector('[name="counselorEmail"]').value,
+    category: form.querySelector('[name="category"]:checked')?.value || "",
+    startDate: form.querySelector('[name="startDate"]').value,
+    endDate: form.querySelector('[name="endDate"]').value,
+    timings: form.querySelector('[name="timings"]').value
   };
 
-  // Manually collect all teacher and subject inputs
-  const teacherInputs = [...form.querySelectorAll('input[name="teachers[]"]')].map(i => i.value.trim());
-  const subjectInputs = [...form.querySelectorAll('input[name="subjects[]"]')].map(i => i.value.trim());
+  // ✅ Gather and combine teachers + subjects
+  const teacherInputs = form.querySelectorAll('input[name="teachers[]"]');
+  const subjectInputs = form.querySelectorAll('input[name="subjects[]"]');
 
-  // Combine as "Teacher - Subject"
-  const combinedPairs = teacherInputs.map((teacher, index) => {
-    const subject = subjectInputs[index] || "";
-    return `${teacher} - ${subject}`;
+  let combined = [];
+
+  teacherInputs.forEach((teacherInput, index) => {
+    const teacher = teacherInput.value.trim();
+    const subject = subjectInputs[index]?.value.trim() || "";
+    if (teacher || subject) {
+      combined.push(`${teacher} - ${subject}`);
+    }
   });
 
-  data.teachers_subjects = combinedPairs.join(", ");
+  data.teachers_subjects = combined.join(", ");
 
   const payload = { data };
 
   try {
     const response = await fetch("https://sheetdb.io/api/v1/czf89zs8v1xxh", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
 
@@ -106,10 +107,10 @@ document.getElementById("multiStepForm").addEventListener("submit", async functi
       currentStep = 4;
       showStep(currentStep);
     } else {
-      alert("Failed to submit. Try again.");
+      alert("Submission failed.");
     }
-  } catch (error) {
-    console.error("Error:", error);
+  } catch (err) {
+    console.error("Error:", err);
     alert("Something went wrong!");
   }
 });
