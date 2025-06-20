@@ -5,7 +5,6 @@ function showStep(step) {
     form.classList.remove('active');
     if (index === step - 1) form.classList.add('active');
   });
-
   document.querySelectorAll('.stepper .step').forEach((stepEl, index) => {
     stepEl.classList.toggle('active', index === step - 1);
   });
@@ -25,7 +24,6 @@ function prevStep() {
   }
 }
 
-// ✅ Allow only step 1–3 navigation via navbar
 function goToStep(step) {
   if (step >= 1 && step <= 3) {
     currentStep = step;
@@ -33,7 +31,6 @@ function goToStep(step) {
   }
 }
 
-// Add teacher–subject input pair
 function addTeacher() {
   const container = document.getElementById("teacherContainer");
   const teacherInput = document.createElement("div");
@@ -62,20 +59,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.getElementById("multiStepForm").addEventListener("submit", async function (e) {
   e.preventDefault();
-
   const form = this;
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
 
-  // 📦 Combine all teacher–subject pairs into one string
   const teacherInputs = [...form.querySelectorAll('input[name="teachers[]"]')].map(i => i.value.trim());
   const subjectInputs = [...form.querySelectorAll('input[name="subjects[]"]')].map(i => i.value.trim());
-
   const combinedTeachers = teacherInputs.map((teacher, index) => `${teacher} - ${subjectInputs[index]}`).join(", ");
 
   data.teachers_subjects = combinedTeachers;
-
-  // Clean up unwanted array fields (optional)
   delete data.teachers;
   delete data.subjects;
 
@@ -87,15 +79,14 @@ document.getElementById("multiStepForm").addEventListener("submit", async functi
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
-
     if (response.ok) {
       currentStep = 4;
       showStep(currentStep);
     } else {
-      alert("❌ Submission failed. Please try again.");
+      alert("Failed to submit. Try again.");
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("⚠️ Something went wrong during submission!");
+    alert("Something went wrong!");
   }
 });
