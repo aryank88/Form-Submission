@@ -52,7 +52,10 @@ document.getElementById('multiStepForm').addEventListener('submit', async (e) =>
   const subjects = [...f.querySelectorAll('.subject-name')].map(i => i.value.trim());
 
   const combined = teachers.map((t, i) => `${t} - ${subjects[i] || ""}`).join(", ");
-  data.teachers_subjects = combined;
+data.teachers_subjects = combined;
+
+console.log("Final data going to SheetDB:", data);
+
 
   // ---- submit ----
   try {
