@@ -1,107 +1,70 @@
 let currentStep = 1;
 
 function showStep(step) {
-  document.querySelectorAll('.step-form').forEach((form, index) => {
-    form.classList.remove('active');
-    if (index === step - 1) form.classList.add('active');
+  document.querySelectorAll('.step-form').forEach((el, idx) => {
+    el.classList.toggle('active', idx === step - 1);
   });
-
-  document.querySelectorAll('.stepper .step').forEach((stepEl, index) => {
-    stepEl.classList.toggle('active', index === step - 1);
+  document.querySelectorAll('.stepper .step').forEach((el, idx) => {
+    el.classList.toggle('active', idx === step - 1);
   });
 }
 
 function nextStep() {
-  if (currentStep < 4) {
-    currentStep++;
-    showStep(currentStep);
-  }
+  if (currentStep < 4) { currentStep++; showStep(currentStep); }
 }
-
 function prevStep() {
-  if (currentStep > 1) {
-    currentStep--;
-    showStep(currentStep);
-  }
+  if (currentStep > 1) { currentStep--; showStep(currentStep); }
 }
-
-function goToStep(step) {
-  if (step >= 1 && step <= 3) {
-    currentStep = step;
-    showStep(currentStep);
-  }
-}
+function goToStep(step) { if (step >= 1 && step <= 3) { currentStep = step; showStep(step); } }
 
 function addTeacher() {
-  const container = document.getElementById("teacherContainer");
-  const teacherInput = document.createElement("div");
-  teacherInput.classList.add("teacher-input");
-
-  const nameInput = document.createElement("input");
-  nameInput.type = "text";
-  nameInput.classList.add("teacher-name");
-  nameInput.placeholder = "Teacher's Name";
-  nameInput.required = true;
-
-  const subjectInput = document.createElement("input");
-  subjectInput.type = "text";
-  subjectInput.classList.add("subject-name");
-  subjectInput.placeholder = "Subject";
-  subjectInput.required = true;
-
-  teacherInput.appendChild(nameInput);
-  teacherInput.appendChild(subjectInput);
-  container.appendChild(teacherInput);
+  const div = document.createElement('div');
+  div.className = 'teacher-input';
+  div.innerHTML = `
+      <input type="text" class="teacher-name" placeholder="Teacher's Name" required>
+      <input type="text" class="subject-name" placeholder="Subject" required>`;
+  document.getElementById('teacherContainer').appendChild(div);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  showStep(currentStep);
-});
+document.addEventListener('DOMContentLoaded', () => showStep(currentStep));
 
-document.getElementById("multiStepForm").addEventListener("submit", async function (e) {
+document.getElementById('multiStepForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const form = this;
+  const f = e.target;
 
+  // ---- fixed fields ----
   const data = {
-    institute: form.querySelector('[name="institute"]').value,
-    logo: form.querySelector('[name="logo"]').value,
-    address: form.querySelector('[name="address"]').value,
-    contact: form.querySelector('[name="contact"]').value,
-    counselorName: form.querySelector('[name="counselorName"]').value,
-    counselorPhone: form.querySelector('[name="counselorPhone"]').value,
-    counselorEmail: form.querySelector('[name="counselorEmail"]').value,
-    category: form.querySelector('[name="category"]:checked')?.value || "",
-    startDate: form.querySelector('[name="startDate"]').value,
-    endDate: form.querySelector('[name="endDate"]').value,
-    timings: form.querySelector('[name="timings"]').value
+    institute:        f.institute.value.trim(),
+    logo:             f.logo.value.trim(),
+    address:          f.address.value.trim(),
+    contact:          f.contact.value.trim(),
+    counselorName:    f.counselorName.value.trim(),
+    counselorPhone:   f.counselorPhone.value.trim(),
+    counselorEmail:   f.counselorEmail.value.trim(),
+    category:         (f.querySelector('[name="category"]:checked')||{}).value || "",
+    startDate:        f.startDate.value,
+    endDate:          f.endDate.value,
+    timings:          f.timings.value.trim()
   };
 
-  // Gather teacher-subject pairs
-  const teachers = [...form.querySelectorAll('.teacher-name')].map(input => input.value.trim());
-  const subjects = [...form.querySelectorAll('.subject-name')].map(input => input.value.trim());
+  // ---- collect all teachers / subjects ----
+  const teachers = [...f.querySelectorAll('.teacher-name')].map(i => i.value.trim());
+  const subjects = [...f.querySelectorAll('.subject-name')].map(i => i.value.trim());
 
-  const combined = teachers.map((teacher, i) => `${teacher} - ${subjects[i]}`).join(", ");
+  const combined = teachers.map((t, i) => `${t} - ${subjects[i] || ""}`).join(", ");
   data.teachers_subjects = combined;
 
-  const payload = { data };
-
+  // ---- submit ----
   try {
-    const response = await fetch("https://sheetdb.io/api/v1/czf89zs8v1xxh", {
+    const res = await fetch("https://sheetdb.io/api/v1/czf89zs8v1xxh", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data })
     });
-
-    if (response.ok) {
-      currentStep = 4;
-      showStep(currentStep);
-    } else {
-      alert("Failed to submit.");
-    }
+    if (res.ok) { currentStep = 4; showStep(4); }
+    else        { alert("Submission failed."); }
   } catch (err) {
     console.error(err);
-    alert("Something went wrong!");
+    alert("Network error.");
   }
 });
