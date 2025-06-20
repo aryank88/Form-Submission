@@ -32,6 +32,7 @@
       <!-- STEP 2 -->
       <div class="step-form" id="step2">
         <h2>Team Setup</h2>
+
         <div id="teacherContainer">
           <div class="teacher-input">
             <input type="text" class="teacher-name" placeholder="Teacher's Name" required />
@@ -53,23 +54,22 @@
       <!-- STEP 3 -->
       <div class="step-form" id="step3">
         <h2>Course Details</h2>
+
         <label>Select Category:</label>
         <div class="radio-group aligned-radio">
-          <input type="radio" id="neet" name="category" value="NEET" />
+          <input type="radio" id="neet" name="category" value="NEET">
           <label for="neet">NEET</label>
-          <input type="radio" id="jee" name="category" value="JEE" />
+          <input type="radio" id="jee" name="category" value="JEE">
           <label for="jee">JEE</label>
-          <input type="radio" id="ssc" name="category" value="SSC" />
+          <input type="radio" id="ssc" name="category" value="SSC">
           <label for="ssc">SSC</label>
         </div>
 
-        <label for="startDate">Start Date:</label>
-        <input type="date" name="startDate" id="startDate" />
-
-        <label for="endDate">End Date:</label>
-        <input type="date" name="endDate" id="endDate" />
-
-        <input type="text" name="timings" placeholder="Timings" />
+        <label>Start Date:</label>
+        <input type="date" name="startDate">
+        <label>End Date:</label>
+        <input type="date" name="endDate">
+        <input type="text" name="timings" placeholder="Timings">
 
         <div class="btn-group">
           <button type="button" onclick="prevStep()">Back</button>
