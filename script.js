@@ -39,13 +39,13 @@ function addTeacher() {
 
   const nameInput = document.createElement("input");
   nameInput.type = "text";
-  nameInput.name = "teachers[]";
+  nameInput.classList.add("teacher-name");
   nameInput.placeholder = "Teacher's Name";
   nameInput.required = true;
 
   const subjectInput = document.createElement("input");
   subjectInput.type = "text";
-  subjectInput.name = "subjects[]";
+  subjectInput.classList.add("subject-name");
   subjectInput.placeholder = "Subject";
   subjectInput.required = true;
 
@@ -60,10 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.getElementById("multiStepForm").addEventListener("submit", async function (e) {
   e.preventDefault();
-
   const form = this;
 
-  // ✅ Manually extract all data fields
   const data = {
     institute: form.querySelector('[name="institute"]').value,
     logo: form.querySelector('[name="logo"]').value,
@@ -78,28 +76,21 @@ document.getElementById("multiStepForm").addEventListener("submit", async functi
     timings: form.querySelector('[name="timings"]').value
   };
 
-  // ✅ Gather and combine teachers + subjects
-  const teacherInputs = form.querySelectorAll('input[name="teachers[]"]');
-  const subjectInputs = form.querySelectorAll('input[name="subjects[]"]');
+  // Gather teacher-subject pairs
+  const teachers = [...form.querySelectorAll('.teacher-name')].map(input => input.value.trim());
+  const subjects = [...form.querySelectorAll('.subject-name')].map(input => input.value.trim());
 
-  let combined = [];
-
-  teacherInputs.forEach((teacherInput, index) => {
-    const teacher = teacherInput.value.trim();
-    const subject = subjectInputs[index]?.value.trim() || "";
-    if (teacher || subject) {
-      combined.push(`${teacher} - ${subject}`);
-    }
-  });
-
-  data.teachers_subjects = combined.join(", ");
+  const combined = teachers.map((teacher, i) => `${teacher} - ${subjects[i]}`).join(", ");
+  data.teachers_subjects = combined;
 
   const payload = { data };
 
   try {
     const response = await fetch("https://sheetdb.io/api/v1/czf89zs8v1xxh", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(payload)
     });
 
@@ -107,10 +98,10 @@ document.getElementById("multiStepForm").addEventListener("submit", async functi
       currentStep = 4;
       showStep(currentStep);
     } else {
-      alert("Submission failed.");
+      alert("Failed to submit.");
     }
   } catch (err) {
-    console.error("Error:", err);
+    console.error(err);
     alert("Something went wrong!");
   }
 });
